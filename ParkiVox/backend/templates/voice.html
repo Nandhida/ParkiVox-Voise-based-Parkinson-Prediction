@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ParkiVox - Voice Analysis</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='voice.css') }}">
+</head>
+<body>
+
+  <!-- Header -->
+  <section class="header">
+    <h1>Voice Analysis</h1>
+    <p>Upload or record your voice sample for Parkinson’s detection</p>
+  </section>
+
+  <!-- Upload / Record Form -->
+  <div class="upload-card">
+    <form id="voiceForm" action="{{ url_for('result') }}" method="POST" enctype="multipart/form-data">
+      
+      <!-- Upload -->
+      <label for="file">🎤 Choose a voice file (WAV/MP3):</label><br><br>
+      <input type="file" name="file" id="file" accept=".wav,.mp3"><br><br>
+
+      <hr>
+
+      <!-- Recording -->
+      <p><b>Or Record a new sample (30 sec max):</b></p>
+      <button type="button" id="recordBtn" class="btn">🎙️ Start Recording</button>
+      <button type="button" id="stopBtn" class="btn" disabled>⏹️ Stop Recording</button>
+      <p id="timer">00:00</p>
+
+      <!-- Preview -->
+      <audio id="audioPreview" controls style="display:none; margin-top:10px;"></audio>
+      <input type="hidden" name="recorded_file" id="recordedFile">
+
+      <br><br>
+      <button type="submit" class="btn">🔍 Analyze Voice</button>
+    </form>
+  </div>
+
+  <!-- Footer Navigation -->
+  <div class="footer-nav">
+    <a href="{{ url_for('home') }}" class="footer-btn">🏠 Home</a>
+    <a href="{{ url_for('chatbot') }}" class="footer-btn">💬 Chatbot</a>
+  </div>
+
+  <!-- Recorder Script -->
+  <script>
+    let mediaRecorder;
+    let audioChunks = [];
+    let timerInterval;
+    let seconds = 0;
+
+    const recordBtn = document.getElementById("recordBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    const audioPreview = document.getElementById("audioPreview");
+    const recordedFile = document.getElementById("recordedFile");
+    const timer = document.getElementById("timer");
+
+    recordBtn.addEventListener("click", async () => {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream);
+      audioChunks = [];
+
+      mediaRecorder.start();
+      recordBtn.disabled = true;
+      stopBtn.disabled = false;
+
+      // Reset timer
+      seconds = 0;
+      timer.textContent = "00:00";
+      timerInterval = setInterval(() => {
+        seconds++;
+        let mins = String(Math.floor(seconds / 60)).padStart(2, '0');
+        let secs = String(seconds % 60).padStart(2, '0');
+        timer.textContent = `${mins}:${secs}`;
+        if (seconds >= 30) { stopBtn.click(); } // auto-stop at 30 sec
+      }, 1000);
+
+      mediaRecorder.ondataavailable = event => {
+        audioChunks.push(event.data);
+      };
+
+      mediaRecorder.onstop = () => {
+        clearInterval(timerInterval);
+        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+        const audioUrl = URL.createObjectURL(audioBlob);
+        audioPreview.src = audioUrl;
+        audioPreview.style.display = "block";
+
+        // Convert blob to Base64 for hidden input
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          recordedFile.value = reader.result; // Base64 string
+        };
+        reader.readAsDataURL(audioBlob);
+      };
+    });
+
+    stopBtn.addEventListener("click", () => {
+      mediaRecorder.stop();
+      recordBtn.disabled = false;
+      stopBtn.disabled = true;
+    });
+  </script>
+
+</body>
+</html>

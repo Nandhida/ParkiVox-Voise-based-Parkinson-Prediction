@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ParkiVox - Result</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='result.css') }}">
+</head>
+<body>
+
+  <!-- Header -->
+  <section class="header">
+    <h1>ParkiVox Result</h1>
+    <p>AI-based Parkinson’s Detection</p>
+  </section>
+
+  <!-- Result Card -->
+  <div class="card">
+    {% if prediction == "Parkinson’s Detected" %}
+      <h2 style="color:#e63946;">⚠️ {{ prediction }}</h2>
+      <p>Probability: {{ probability }}%</p>
+      <p>{{ advice_text }}</p>
+    {% else %}
+      <h2 style="color:#2a9d8f;"> {{ prediction }}</h2>
+      <p>Probability: {{ probability }}%</p>
+      <p>{{ advice_text }}</p>
+    {% endif %}
+
+    <!--
+      {% if features %}
+      <h3>Extracted Features</h3>
+      <table class="features-table">
+        <tr>
+          <th>Feature</th>
+          <th>Value</th>
+        </tr>
+        {% for key, value in features.items() %}
+          <tr>
+            <td>{{ key }}</td>
+            <td>{{ value }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+      <br>
+      <a href="{{ url_for('download_features') }}" class="footer-btn">⬇️ Download Features</a>
+    {% endif %} 
+    -->
+
+    {% if ai_explanation %}
+      <h3>AI Explanation</h3>
+      <p>{{ ai_explanation }}</p>
+    {% endif %} <!-- 🔥 Close IF properly -->
+
+  </div>
+
+  <!-- Footer Navigation -->
+  <div class="footer-nav">
+    <a href="{{ url_for('home') }}" class="footer-btn">🏠 Home</a>
+    <a href="{{ url_for('voice') }}" class="footer-btn">🎤 New Test</a>
+    <a href="{{ url_for('chatbot') }}" class="footer-btn">💬 Chatbot</a>
+  </div>
+
+</body>
+</html>

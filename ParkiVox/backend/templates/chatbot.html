@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Medical Chatbot - ParkiVox</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='chatbot.css') }}">
+  <script src="{{ url_for('static', filename='chatbot.js') }}" defer></script>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <h1>🧠 ParkiVox Chatbot</h1>
+  </nav>
+
+  <!-- Chat Container -->
+  <div class="chat-container">
+
+    <!-- Chatbot image + title -->
+    <div style="text-align:center; margin-bottom:15px;">
+      <img src="{{ url_for('static', filename='chatbot.png') }}" alt="Chatbot" width="100" />
+      <h2>Parkinson’s Medical Assistant</h2>
+    </div>
+
+    <!-- Chat Messages -->
+    <div id="chatbox" class="chatbox"></div>
+
+    <!-- Input Area -->
+    <div class="input-area">
+      <input id="userInput" type="text" placeholder="Ask about Parkinson’s..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <!-- Navigation Buttons -->
+  <div style="text-align:center; margin-top:20px;">
+    <a href="{{ url_for('home') }}" class="back-btn">🏠 Home</a>
+    <a href="{{ url_for('voice') }}" class="back-btn">🎤 Voice Analysis</a>
+  </div>
+
+</body>
+</html>

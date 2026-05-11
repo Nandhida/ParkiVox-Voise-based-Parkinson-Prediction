@@ -1,0 +1,112 @@
+/* Background and font */
+body {
+  background: #f0f8ff; /* light blue */
+  color: #1e293b;
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #e6f2ff; /* softer blue */
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.navbar h1 {
+  color: #2563eb; /* blue accent */
+  margin: 0;
+}
+
+/* Chat container */
+.chat-container {
+  max-width: 700px;
+  margin: 30px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Chatbox */
+.chatbox {
+  height: 400px;
+  overflow-y: auto;
+  background: #f8fafc;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #cbd5e1;
+}
+
+.message {
+  margin: 8px 0;
+  padding: 8px 12px;
+  border-radius: 5px;
+  max-width: 80%;
+}
+
+.message.user {
+  background: #2563eb;
+  color: white;
+  margin-left: auto;
+}
+
+.message.bot {
+  background: #60a5fa;
+  color: #fff;
+}
+
+.message.typing {
+  font-style: italic;
+  opacity: 0.7;
+}
+
+/* Input area */
+.input-area {
+  display: flex;
+  gap: 10px;
+}
+
+.input-area input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #94a3b8;
+}
+
+.input-area button {
+  background: #2563eb;
+  border: none;
+  padding: 10px 15px;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.input-area button:hover {
+  background: #1d4ed8;
+}
+
+/* Navigation buttons */
+.back-btn {
+  display: inline-block;
+  margin: 10px;
+  padding: 12px 24px;
+  background: white;
+  color: #2563eb;
+  text-decoration: none;
+  border-radius: 999px; /* pill shape */
+  font-size: 16px;
+  font-weight: bold;
+  border: 2px solid #2563eb;
+  box-shadow: 2px 4px 10px rgba(0,0,0,0.1);
+  transition: all 0.3s;
+}
+
+.back-btn:hover {
+  background: #2563eb;
+  color: white;
+}

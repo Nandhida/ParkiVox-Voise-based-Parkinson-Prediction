@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ParkiVox</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <h2 class="logo">ParkiVox</h2>
+    <ul>
+      <li><a href="#" class="nav-link active" data-tab="home">Home</a></li>
+      <li><a href="/voice" class="nav-link" data-tab="voice">Voice Analysis</a></li>
+      <li><a href="/chatbot" class="nav-link">Medical Chatbot</a></li>
+    </ul>
+  </nav>
+
+  <!-- Home Section -->
+  <section class="home-section">
+    <div class="home-left">
+      <img src="{{ url_for('static', filename='parki_logo.png') }}" alt="ParkiVox Logo" class="home-logo">
+      <p class="home-text">
+        ParkiVox – An AI-powered tool for early detection 
+        using keystroke dynamics, voice analysis, and a 
+        chatbot for Parkinson’s-related queries.
+      </p>
+    </div>
+    <div class="home-right">
+      <img src="{{ url_for('static', filename='brain.png') }}" alt="Brain Illustration" class="brain-img">
+      <div class="disease-info">
+        <h3>🧠 About Parkinson’s Disease</h3>
+        <p>
+          Parkinson’s disease is a progressive neurological disorder that affects movement. <br>
+          <strong>Early symptoms include:</strong>
+        </p>
+        <ul>
+          <li>Tremor in hands</li>
+          <li>Slowed movement (bradykinesia)</li>
+          <li>Muscle stiffness</li>
+          <li>Changes in speech and handwriting</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+<script>
+let mediaRecorder;
+let audioChunks = [];
+
+// Record button elements
+const recordBtn = document.getElementById("recordBtn");
+const stopBtn = document.getElementById("stopBtn");
+const statusText = document.getElementById("statusText");
+
+// Start recording
+recordBtn.addEventListener("click", async () => {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    mediaRecorder = new MediaRecorder(stream);
+    audioChunks = [];
+
+    mediaRecorder.ondataavailable = (event) => {
+      if (event.data.size > 0) audioChunks.push(event.data);
+    };
+
+    mediaRecorder.onstop = () => {
+      const blob = new Blob(audioChunks, { type: "audio/wav" });
+      sendAudioToServer(blob);
+    };
+
+    mediaRecorder.start();
+    statusText.innerText = "Recording...";
+    recordBtn.disabled = true;
+    stopBtn.disabled = false;
+  } catch (err) {
+    alert("Microphone access denied or not available.");
+    console.error(err);
+  }
+});
+
+// Stop recording
+stopBtn.addEventListener("click", () => {
+  if (mediaRecorder && mediaRecorder.state !== "inactive") {
+    mediaRecorder.stop();
+    statusText.innerText = "Processing...";
+    stopBtn.disabled = true;
+    recordBtn.disabled = false;
+  }
+});
+
+// Send to Flask
+async function sendAudioToServer(blob) {
+  const formData = new FormData();
+  formData.append("audio", blob, "recording.wav");
+
+  try {
+    const response = await fetch("/predict", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await response.json();
+    if (data.error) {
+      statusText.innerText = "Error: " + data.error;
+    } else {
+      statusText.innerText = `✅ Prediction: ${data.prediction == 1 ? "Parkinson’s Detected" : "No Parkinson’s"}`;
+    }
+  } catch (err) {
+    statusText.innerText = "Upload failed.";
+    console.error(err);
+  }
+}
+</script>
+
+</body>
+</html>

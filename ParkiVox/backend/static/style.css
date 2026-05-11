@@ -1,0 +1,212 @@
+/* ===== Global Reset ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: #f0f8ff; /* very light blue */
+  color: #333;
+  line-height: 1.6;
+}
+
+/* ===== Navbar ===== */
+.navbar {
+  background: linear-gradient(90deg, #4da3ff, #74c0fc);
+  color: #fff;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar .logo {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.navbar ul li a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.navbar ul li a:hover,
+.navbar ul li a.active {
+  color: #ffe066; /* light yellow for hover contrast */
+}
+
+/* ===== Home Section ===== */
+.home-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 60px;
+  gap: 40px;
+  min-height: 80vh;
+}
+
+/* Left content */
+.home-left {
+  flex: 1;
+}
+
+.home-logo {
+  width: 250px;
+  height: auto;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.home-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #333;
+  max-width: 450px;
+}
+
+/* Right content */
+.home-right {
+  flex: 1;
+  text-align: center;
+}
+
+.brain-img {
+  width: 200px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.disease-info {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+  text-align: left;
+  border: 1px solid #d0e7ff; /* subtle blue border */
+}
+
+.disease-info h3 {
+  color: #4da3ff;
+  margin-bottom: 10px;
+}
+
+.disease-info ul {
+  margin-left: 20px;
+  list-style-type: disc;
+  color: #444;
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 992px) {
+  .home-section {
+    flex-direction: column;
+    text-align: center;
+    padding: 30px 20px;
+  }
+
+  .home-left, .home-right {
+    flex: unset;
+    width: 100%;
+  }
+
+  .home-logo {
+    width: 200px;
+    margin: 0 auto 20px;
+  }
+
+  .brain-img {
+    width: 180px;
+    margin: 0 auto 20px;
+  }
+
+  .disease-info {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .navbar ul {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar ul {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .home-logo {
+    width: 180px;
+  }
+
+  .brain-img {
+    width: 150px;
+  }
+}
+
+/* ===== Animations ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Apply animations */
+.home-logo {
+  animation: fadeInLeft 1s ease-out;
+}
+
+.home-text {
+  animation: fadeInUp 1.2s ease-out;
+}
+
+.brain-img {
+  animation: fadeInRight 1s ease-out;
+}
+
+.disease-info {
+  animation: fadeInUp 1.4s ease-out;
+}
